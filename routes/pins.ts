@@ -1,35 +1,35 @@
 import Router, {RouterContext} from "koa-router";
 import bodyParser from "koa-bodyparser";
 
-import * as model from "../models/products"
+import * as model from "../models/pins"
 
-const router = new Router({prefix: '/api/products'});
+const router = new Router({prefix: '/api/pins'});
 
-//Get all products
+//Get all pins
 const getAll = async (ctx: RouterContext, next: any)=> {
-    let products = await model.getAll();
-    if (products.length) {
-        ctx.body = products;
+    let pins = await model.getAll();
+    if (pins.length) {
+        ctx.body = pins;
     } else {
         ctx.body = {}
     }
     await next();
 }
 
-//Get specific product by product id
-const getByProductId = async (ctx: RouterContext, next: any) => {
-    let product_id = +ctx.params.id;
-    let products = await model.getById(product_id);
-    if (products.length) {
-        ctx.body = products[0];
+//Get specific pin by pin id
+const getByPinId = async (ctx: RouterContext, next: any) => {
+    let pin_id = +ctx.params.id;
+    let pins = await model.getById(pin_id);
+    if (pins.length) {
+        ctx.body = pins[0];
       } else {
         ctx.status = 404;
       }
     await next();
 }
 
-//Create a new product
-const createProduct = async (ctx: RouterContext, next: any) => {
+//Create a new pin
+const createPin = async (ctx: RouterContext, next: any) => {
     const body = ctx.request.body;
     let result = await model.add(body);
     if (result.status == 201) {
@@ -42,11 +42,11 @@ const createProduct = async (ctx: RouterContext, next: any) => {
     await next();
 }
 
-//Update existing product by product id
-const updateProduct = async (ctx: RouterContext, next: any) => {
-    const product_id = ctx.params.id;
+//Update existing pin by pin id
+const updatePin = async (ctx: RouterContext, next: any) => {
+    const pin_id = ctx.params.id;
     const body = ctx.request.body;
-    let result = await model.update(product_id, body);
+    let result = await model.update(pin_id, body);
     if (result.status == 200) {
         ctx.status = 200;
         ctx.body = body;
@@ -57,11 +57,11 @@ const updateProduct = async (ctx: RouterContext, next: any) => {
     await next();
 }
   
-//Delete existing product by product id
-const deleteProduct = async (ctx: RouterContext, next: any) => {
+//Delete existing pin by pin id
+const deletePin = async (ctx: RouterContext, next: any) => {
     const { id } = ctx.params;
-    const product = await model.getById(id);
-    if (product.length) {
+    const pin = await model.getById(id);
+    if (pin.length) {
         const result = await model.remove(id);
         if (result.status == 200) {
             ctx.status = 204;
@@ -72,15 +72,15 @@ const deleteProduct = async (ctx: RouterContext, next: any) => {
         }
     } else {
         ctx.status = 404;
-        ctx.body = { err: "product not found" };
+        ctx.body = { err: "pin not found" };
     }
     await next();
 } 
 
 router.get('/', getAll);
-router.post('/', bodyParser(), createProduct);
-router.get('/:id([0-9]{1,})', getByProductId);
-router.put('/:id([0-9]{1,})', bodyParser(), updateProduct);
-router.del('/:id([0-9]{1,})', deleteProduct);
+router.post('/', bodyParser(), createPin);
+router.get('/:id([0-9]{1,})', getByPinId);
+router.put('/:id([0-9]{1,})', bodyParser(), updatePin);
+router.del('/:id([0-9]{1,})', deletePin);
 
 export { router };

@@ -1,35 +1,35 @@
 import Router, {RouterContext} from "koa-router";
 import bodyParser from "koa-bodyparser";
 
-import * as model from "../models/products"
+import * as model from "../models/carts"
 
-const router = new Router({prefix: '/api/products'});
+const router = new Router({prefix: '/api/carts'});
 
-//Get all products
+//Get all carts
 const getAll = async (ctx: RouterContext, next: any)=> {
-    let products = await model.getAll();
-    if (products.length) {
-        ctx.body = products;
+    let carts = await model.getAll();
+    if (carts.length) {
+        ctx.body = carts;
     } else {
         ctx.body = {}
     }
     await next();
 }
 
-//Get specific product by product id
-const getByProductId = async (ctx: RouterContext, next: any) => {
-    let product_id = +ctx.params.id;
-    let products = await model.getById(product_id);
-    if (products.length) {
-        ctx.body = products[0];
+//Get specific cart by cart id
+const getByCartId = async (ctx: RouterContext, next: any) => {
+    let cart_id = +ctx.params.id;
+    let carts = await model.getById(cart_id);
+    if (carts.length) {
+        ctx.body = carts[0];
       } else {
         ctx.status = 404;
       }
     await next();
 }
 
-//Create a new product
-const createProduct = async (ctx: RouterContext, next: any) => {
+//Create a new cart
+const createCart = async (ctx: RouterContext, next: any) => {
     const body = ctx.request.body;
     let result = await model.add(body);
     if (result.status == 201) {
@@ -42,11 +42,11 @@ const createProduct = async (ctx: RouterContext, next: any) => {
     await next();
 }
 
-//Update existing product by product id
-const updateProduct = async (ctx: RouterContext, next: any) => {
-    const product_id = ctx.params.id;
+//Update existing cart by cart id
+const updateCart = async (ctx: RouterContext, next: any) => {
+    const cart_id = ctx.params.id;
     const body = ctx.request.body;
-    let result = await model.update(product_id, body);
+    let result = await model.update(cart_id, body);
     if (result.status == 200) {
         ctx.status = 200;
         ctx.body = body;
@@ -57,11 +57,11 @@ const updateProduct = async (ctx: RouterContext, next: any) => {
     await next();
 }
   
-//Delete existing product by product id
-const deleteProduct = async (ctx: RouterContext, next: any) => {
+//Delete existing cart by cart id
+const deleteCart = async (ctx: RouterContext, next: any) => {
     const { id } = ctx.params;
-    const product = await model.getById(id);
-    if (product.length) {
+    const cart = await model.getById(id);
+    if (cart.length) {
         const result = await model.remove(id);
         if (result.status == 200) {
             ctx.status = 204;
@@ -72,15 +72,15 @@ const deleteProduct = async (ctx: RouterContext, next: any) => {
         }
     } else {
         ctx.status = 404;
-        ctx.body = { err: "product not found" };
+        ctx.body = { err: "cart not found" };
     }
     await next();
 } 
 
 router.get('/', getAll);
-router.post('/', bodyParser(), createProduct);
-router.get('/:id([0-9]{1,})', getByProductId);
-router.put('/:id([0-9]{1,})', bodyParser(), updateProduct);
-router.del('/:id([0-9]{1,})', deleteProduct);
+router.post('/', bodyParser(), createCart);
+router.get('/:id([0-9]{1,})', getByCartId);
+router.put('/:id([0-9]{1,})', bodyParser(), updateCart);
+router.del('/:id([0-9]{1,})', deleteCart);
 
 export { router };
