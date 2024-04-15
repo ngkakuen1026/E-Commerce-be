@@ -1,6 +1,8 @@
 import Router, {RouterContext} from "koa-router";
 import bodyParser from "koa-bodyparser";
 
+import { basicAuth } from "../controllers/auth";
+
 import * as model from "../models/users"
 
 const router = new Router({prefix: '/api/users'});
@@ -27,6 +29,19 @@ const getByUserId = async (ctx: RouterContext, next: any) => {
       }
     await next();
 }
+
+//Get specific user by user name
+const getByUsername = async (ctx: RouterContext, next: any) => {
+    const username = ctx.params.username;
+    const user = await model.findByUsername(username);
+    if (user.length) {
+      ctx.body = user[0];
+    } else {
+      ctx.status = 404;
+      ctx.body = { error: 'User not found' };
+    }
+    await next();
+  }
 
 //Create a new user
 const createUser = async (ctx: RouterContext, next: any) => {
@@ -75,12 +90,13 @@ const deleteUser = async (ctx: RouterContext, next: any) => {
         ctx.body = { err: "user not found" };
     }
     await next();
-} 
+}
 
-router.get('/', getAll);
+router.get('/', basicAuth, getAll);
 router.post('/', bodyParser(), createUser);
+router.get('/:id([0-9]{1,})', getByUsername);
 router.get('/:id([0-9]{1,})', getByUserId);
-router.put('/:id([0-9]{1,})', bodyParser(), updateUser);
-router.del('/:id([0-9]{1,})', deleteUser);
+router.put('/:id([0-9]{1,})', bodyParser(), basicAuth, updateUser);
+router.del("/:id([0-9]{1,})", basicAuth, deleteUser);
 
 export { router };

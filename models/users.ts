@@ -15,6 +15,13 @@ export const getById = async (id: any) => {
     return data;
 }
 
+//Get specific user by user name
+export const findByUsername = async (username: any) => {
+  const query = 'SELECT * from users where name = ?';
+  const user = await db.run_query(query, [username]);
+  return user;
+}
+
 //Create a new user in the database
 export const add = async (user: any) => {
     let keys = Object.keys(user);

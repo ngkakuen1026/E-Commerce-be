@@ -2,6 +2,7 @@ import Router, {RouterContext} from "koa-router";
 import bodyParser from "koa-bodyparser";
 
 import * as model from "../models/reviews"
+import { basicAuth } from "../controllers/auth";
 
 const router = new Router({prefix: '/api/reviews'});
 
@@ -78,9 +79,9 @@ const deleteReview = async (ctx: RouterContext, next: any) => {
 } 
 
 router.get('/', getAll);
-router.post('/', bodyParser(), createReview);
+router.post('/', bodyParser(), basicAuth, createReview);
 router.get('/:id([0-9]{1,})', getByReviewId);
-router.put('/:id([0-9]{1,})', bodyParser(), updateReview);
-router.del('/:id([0-9]{1,})', deleteReview);
+router.put('/:id([0-9]{1,})', bodyParser(), basicAuth, updateReview);
+router.del('/:id([0-9]{1,})', basicAuth, deleteReview);
 
 export { router };

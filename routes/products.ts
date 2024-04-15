@@ -2,6 +2,7 @@ import Router, {RouterContext} from "koa-router";
 import bodyParser from "koa-bodyparser";
 
 import * as model from "../models/products"
+import { basicAuth } from "../controllers/auth";
 
 const router = new Router({prefix: '/api/products'});
 
@@ -78,9 +79,9 @@ const deleteProduct = async (ctx: RouterContext, next: any) => {
 } 
 
 router.get('/', getAll);
-router.post('/', bodyParser(), createProduct);
+router.post('/', bodyParser(), basicAuth, createProduct);
 router.get('/:id([0-9]{1,})', getByProductId);
-router.put('/:id([0-9]{1,})', bodyParser(), updateProduct);
-router.del('/:id([0-9]{1,})', deleteProduct);
+router.put('/:id([0-9]{1,})', bodyParser(), basicAuth, updateProduct);
+router.del("/:id([0-9]{1,})", basicAuth, deleteProduct);
 
 export { router };

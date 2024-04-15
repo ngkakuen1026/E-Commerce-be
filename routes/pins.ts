@@ -2,6 +2,7 @@ import Router, {RouterContext} from "koa-router";
 import bodyParser from "koa-bodyparser";
 
 import * as model from "../models/pins"
+import { basicAuth } from "../controllers/auth";
 
 const router = new Router({prefix: '/api/pins'});
 
@@ -77,10 +78,10 @@ const deletePin = async (ctx: RouterContext, next: any) => {
     await next();
 } 
 
-router.get('/', getAll);
-router.post('/', bodyParser(), createPin);
-router.get('/:id([0-9]{1,})', getByPinId);
-router.put('/:id([0-9]{1,})', bodyParser(), updatePin);
-router.del('/:id([0-9]{1,})', deletePin);
+router.get('/', basicAuth, getAll);
+router.post('/', bodyParser(), basicAuth, createPin);
+router.get('/:id([0-9]{1,})', basicAuth, getByPinId);
+router.put('/:id([0-9]{1,})', bodyParser(), basicAuth, updatePin);
+router.del('/:id([0-9]{1,})', basicAuth, deletePin);
 
 export { router };

@@ -11,15 +11,9 @@ import {router as reviews } from "./routes/reviews";
 import {router as categories} from "./routes/categories";
 import {router as pins } from "./routes/pins";
 
+import {router as special} from "./routes/special";
 
 const router: Router = new Router();
-const welcomeAPI = async (ctx: RouterContext, next: any) => {
-    ctx.body = {
-        message: "E-commerce API!"
-    };
-    await next();
-}
-router.get('/api/welcomeAPI', welcomeAPI);
 
 app.use(logger());
 app.use(json());
@@ -28,6 +22,7 @@ app.use(users.routes());
 app.use(carts.routes());
 app.use(reviews.routes());
 app.use(categories.routes());
-app.use(pins.routes())
+app.use(pins.routes());
+app.use(special.routes());
 app.use(router.routes());
 app.listen(10888);
