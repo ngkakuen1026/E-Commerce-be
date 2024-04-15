@@ -3,6 +3,7 @@ import bodyParser from "koa-bodyparser";
 
 import * as model from "../models/categories"
 import { basicAuth } from "../controllers/auth";
+import { validateCategory } from "../controllers/validation";
 
 const router = new Router({prefix: '/api/categories'});
 
@@ -81,9 +82,9 @@ const deleteCategory = async (ctx: RouterContext, next: any) => {
 
 
 router.get('/', getAll);
-router.post('/', bodyParser(), basicAuth, createCategory);
+router.post('/', bodyParser(), basicAuth, validateCategory, createCategory);
 router.get('/:id([0-9]{1,})', getByCategoryId);
-router.put('/:id([0-9]{1,})', bodyParser(), basicAuth, updateCategory);
+router.put('/:id([0-9]{1,})', basicAuth, bodyParser(), validateCategory, updateCategory);
 router.del('/:id([0-9]{1,})', basicAuth, deleteCategory);
 
 export { router };

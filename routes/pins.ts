@@ -3,6 +3,7 @@ import bodyParser from "koa-bodyparser";
 
 import * as model from "../models/pins"
 import { basicAuth } from "../controllers/auth";
+import { validatePin } from "../controllers/validation";
 
 const router = new Router({prefix: '/api/pins'});
 
@@ -79,9 +80,9 @@ const deletePin = async (ctx: RouterContext, next: any) => {
 } 
 
 router.get('/', basicAuth, getAll);
-router.post('/', bodyParser(), basicAuth, createPin);
+router.post('/', basicAuth, bodyParser(), validatePin, createPin);
 router.get('/:id([0-9]{1,})', basicAuth, getByPinId);
-router.put('/:id([0-9]{1,})', bodyParser(), basicAuth, updatePin);
+router.put('/:id([0-9]{1,})', basicAuth, bodyParser(), validatePin, updatePin);
 router.del('/:id([0-9]{1,})', basicAuth, deletePin);
 
 export { router };

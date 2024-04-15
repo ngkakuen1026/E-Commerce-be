@@ -3,6 +3,7 @@ import bodyParser from "koa-bodyparser";
 
 import * as model from "../models/reviews"
 import { basicAuth } from "../controllers/auth";
+import { validateReview } from "../controllers/validation";
 
 const router = new Router({prefix: '/api/reviews'});
 
@@ -79,9 +80,9 @@ const deleteReview = async (ctx: RouterContext, next: any) => {
 } 
 
 router.get('/', getAll);
-router.post('/', bodyParser(), basicAuth, createReview);
+router.post('/', basicAuth, bodyParser(), validateReview, createReview);
 router.get('/:id([0-9]{1,})', getByReviewId);
-router.put('/:id([0-9]{1,})', bodyParser(), basicAuth, updateReview);
+router.put('/:id([0-9]{1,})', basicAuth, bodyParser(), validateReview, updateReview);
 router.del('/:id([0-9]{1,})', basicAuth, deleteReview);
 
 export { router };
