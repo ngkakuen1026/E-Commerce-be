@@ -27,6 +27,7 @@ const getByUserId = async (ctx: RouterContext, next: any) => {
         ctx.body = users[0];
       } else {
         ctx.status = 404;
+        ctx.body = { error: 'User not found' };
       }
     await next();
 }

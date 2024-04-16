@@ -1,0 +1,437 @@
+openapi: 3.0.0
+info:
+  title: E-Commerce Backend API
+  description: This is an OpenAPI Specification for my custom E-Commerce API. Read the following information to know how different API endpoints work.
+  version: 1.0.0
+  contact:
+    name: Alan Ng
+    email: nkk991026@gmail.com
+  license:
+    name: Apache 2.0
+    url: "https://www.apache.org/licenses/LICENSE-2.0.html"
+servers:
+  - url: "http://localhost:10888/api/"
+    description: Development server
+tags:
+  - name: Users
+    description: API endpoints for user management
+  - name: Products
+    description: API endpoints for accessing and performing CRUD operations on product entries
+  - name: Categories
+    description: API endpoints for accessing and performing CRUD operations on categories list
+  - name: Pins
+    description: API endpoints for accessing and performing CRUD operations on list of user pinned products
+  - name: Reviews
+    description: API endpoints for accessing and performing CRUD operations on user writing reviews
+  - name: Carts
+    description: API endpoints for accessing and performing CRUD operations on shopping carts
+paths:
+  /users/:
+    get:
+      tags:
+        - Users
+      description:
+        Get all users
+      responses:
+        '200':
+          description: View all user record
+    post:
+      tags:
+        - Users
+      description:
+        Create new user
+      requestBody:
+        description: New user data
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ./users.json#/definitions/user
+      responses:
+        '201':
+          description: User record created.
+        '500':
+          description: Data create failed.
+  /users/{username}:
+    get:
+      tags:
+        - Users
+      description:
+        Get specific user by Username
+      responses:
+        '200':
+          description: View specific user record
+        '404':
+          description: User record not found
+  /users/{id}:
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+        description: Numeric id of the user
+    get:
+      tags:
+        - Users
+      description:
+        Get specific user by ID
+      responses:
+        '200':
+          description: View specific user record
+        '404':
+          description: User record not found
+    put:
+      tags:
+        - Users
+      description:
+        Update specific user by ID
+      responses:
+        '200':
+          description: User record updated
+        '500':
+          description: User record update failed
+    delete:
+      tags:
+        - Users
+      description:
+        Delete specific user by ID
+      responses:
+        '200':
+          description: User record updated
+        '404':
+          description: User record not found
+        '500':
+          description: User record update failed
+  # Products
+  /products/:
+    get:
+      tags:
+        - Products
+      description:
+        Get all product
+      responses:
+        '200':
+          description: View all user record
+    post:
+      tags:
+        - Products
+      description:
+        Create new product
+      requestBody:
+        description: New product data
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ./products.json#/definitions/product
+      responses:
+        '201':
+          description: User record created.
+        '500':
+          description: Data create failed.
+  /products/{id}:
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+        description: Numeric id of the product
+    get:
+      tags:
+        - Products
+      description:
+        Get specific product by ID
+      responses:
+        '200':
+          description: View specific product record
+        '404':
+          description: Product record not found
+    put:
+      tags:
+        - Products
+      description:
+        Update specific product by ID
+      responses:
+        '200':
+          description: Product record updated
+        '500':
+          description: Product record update failed
+    delete:
+      tags:
+        - Products
+      description:
+        Delete specific product by ID
+      responses:
+        '200':
+          description: Product record updated
+        '404':
+          description: Product record not found
+        '500':
+          description: Product record update failed
+  # Categories
+  /categories/:
+    get:
+      tags:
+        - Categories
+      description:
+        Get all categories
+      responses:
+        '200':
+          description: View all categories
+    post:
+      tags:
+        - Categories
+      description:
+        Create new category
+      requestBody:
+        description: New category data
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ./categories.json#/definitions/category
+      responses:
+        '201':
+          description: User record created.
+        '500':
+          description: Data create failed.
+  /categories/{id}:
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+        description: Numeric id of the category
+    get:
+      tags:
+        - Categories
+      description:
+        Get specific category by ID.
+      responses:
+        '200':
+          description: View specific category record
+        '404':
+          description: Category record not found
+    put:
+      tags:
+        - Categories
+      description:
+        Update specific category by ID
+      responses:
+        '200':
+          description: Category record updated
+        '500':
+          description: Category record update failed
+    delete:
+      tags:
+        - Categories
+      description:
+        Delete specific category by ID
+      responses:
+        '200':
+          description: Category record updated
+        '404':
+          description: Category record not found
+        '500':
+          description: Category record update failed
+  # Pins
+  /pins/:
+    get:
+      tags:
+        - Pins
+      description:
+        Get all pins
+      responses:
+        '200':
+          description: View all pins
+    post:
+      tags:
+        - Pins
+      description:
+        Create new pins
+      requestBody:
+        description: New pin data
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ./pins.json#/definitions/pin
+      responses:
+        '201':
+          description: Pin record created.
+        '500':
+          description: Data create failed.
+  /pins/{id}:
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+        description: Numeric id of the pin
+    get:
+      tags:
+        - Pins
+      description:
+        Get specific pin by ID
+      responses:
+        '200':
+          description: View specific pin record
+        '404':
+          description: Pin record not found
+    put:
+      tags:
+        - Pins
+      description:
+        Update specific pin by ID
+    delete:
+      tags:
+        - Pins
+      description:
+        Delete specific pin by ID
+      responses:
+        '200':
+          description: Pin record updated
+        '404':
+          description: Pin record not found
+        '500':
+          description: Pin record update failed
+  # Review
+  /reviews/:
+    get:
+      tags:
+        - Reviews
+      description:
+        Get all reviews
+      responses:
+        '200':
+          description: View all review
+    post:
+      tags:
+        - Reviews
+      description:
+        Create new review
+      requestBody:
+        description: New review data
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ./reviews.json#/definitions/review
+      responses:
+        '201':
+          description: Review record created.
+        '500':
+          description: Data create failed.
+  /reviews/{id}:
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+        description: Numeric id of the review
+    get:
+      tags:
+        - Reviews
+      description:
+        Get specific review by ID
+      responses:
+        '200':
+          description: View specific review record
+        '404':
+          description: Review record not found
+    put:
+      tags:
+        - Reviews
+      description:
+        Update specific review by ID
+      responses:
+        '200':
+          description: Review record updated
+        '500':
+          description: Review record update failed
+    delete:
+      tags:
+        - Reviews
+      description:
+        Delete specific review by ID
+      responses:
+        '200':
+          description: Review record updated
+        '404':
+          description: Review record not found
+        '500':
+          description: Review record update failed
+  # Carts
+  /carts/:
+    get:
+      tags:
+        - Carts
+      description:
+        Get all product in cart
+      responses:
+        '200':
+          description: View all carts
+    post:
+      tags:
+        - Carts
+      description:
+        Create new cart
+      requestBody:
+        description: New cart data
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ./carts.json#/definitions/cart
+      responses:
+        '201':
+          description: Carts record created.
+        '500':
+          description: Data create failed.
+  /carts/{id}:
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+        description: Numeric id of the carts
+    get:
+      tags:
+        - Carts
+      description:
+        Get specific cart by ID
+      responses:
+        '200':
+          description: View specific cart record
+        '404':
+          description: Cart record not found
+    put:
+      tags:
+        - Carts
+      description:
+        Update specific cart by ID
+      responses:
+        '200':
+          description: Cart record updated
+        '500':
+          description: Cart record update failed
+    delete:
+      tags:
+        - Carts
+      description:
+        Delete specific cart by ID
+      responses:
+        '200':
+          description: Cart record updated
+        '404':
+          description: Cart record not found
+        '500':
+          description: Cart record update failed
+
+      
