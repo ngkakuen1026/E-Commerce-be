@@ -1,4 +1,6 @@
 import * as db from "../helpers/db";
+import bcrypt from 'bcrypt';
+import crypto from 'crypto';
 
 //Get all users from database
 export const getAll = async () => {
@@ -22,22 +24,32 @@ export const findByUsername = async (username: any) => {
   return user;
 }
 
-//Create a new user in the database
+// Create a new user in the database
 export const add = async (user: any) => {
-    let keys = Object.keys(user);
-    let values = Object.values(user);
+    const salt = generateSalt();
+    const hashedPassword = await hashPassword(user.password);
+
+    const userToSave = {
+      ...user,
+      password: hashedPassword,
+      password_salt: salt,
+    };
+
+    let keys = Object.keys(userToSave);
+    let values = Object.values(userToSave);
     let key = keys.join(',');
     let param = '';
-    for(let i: number=0; i<values.length; i++){ param +='?,'}
-    param=param.slice(0,-1);
+    for (let i: number = 0; i < values.length; i++) { param += '?,'; }
+    param = param.slice(0, -1);
     let query = `INSERT INTO users (${key}) VALUES (${param})`;
-    try{
-    await db.run_insert(query, values);
-        return {status: 201};
-    } catch(err: any) {
-        return err;
+
+    try {
+      await db.run_insert(query, values);
+      return { status: 201 };
+    } catch (err: any) {
+      return err;
     }
-}
+};
 
 //Update existing user by user id  
 export const update = async (user_id: any, user: any) => {
@@ -65,3 +77,19 @@ export const remove = async (user_id: any) => {
       return err;
     }
 }
+
+const generateSalt = (): string => {
+  return crypto.randomBytes(16).toString('hex');
+};
+
+const hashPassword = async (password: string): Promise<string> => {
+  try {
+    const saltRounds = 10;
+    const salt = await bcrypt.genSalt(saltRounds);
+    const hashedPassword = await bcrypt.hash(password, salt);
+    return hashedPassword;
+  } catch (err) {
+    console.error('Error hashing password:', err);
+    throw new Error('Error hashing password');
+  }
+};

@@ -94,7 +94,7 @@ const deleteUser = async (ctx: RouterContext, next: any) => {
     await next();
 }
 
-router.get('/', basicAuth, getAll);
+router.get('/', getAll);
 router.post('/', bodyParser(), validateUser, createUser);
 router.get('/:id([0-9]{1,})', getByUsername);
 router.get('/:id([0-9]{1,})', getByUserId);

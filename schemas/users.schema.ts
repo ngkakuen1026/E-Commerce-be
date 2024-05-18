@@ -1,7 +1,6 @@
 export const user = {
     "$schema": "http://json-schema.org/draft-04/schema#",
-    "user_id": "/user",
-    "name": "User",
+    "title": "User",
     "description": "An User in E-commerce web",
     "type": "object",
     "properties": {
@@ -28,12 +27,12 @@ export const user = {
         },
         "phone_number": {
             "description": "Phone number of the user",
-            "type": "integer"
+            "type": "string"
         },
         "role": {
             "description": "Define the user's role (admin or user)",
             "type": "string",
         },
     },
-    "required": ["name", "email", "password", "password_salt"]
+    "required": ["name", "email", "password"]
 }

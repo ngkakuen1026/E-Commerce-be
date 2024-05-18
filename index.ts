@@ -3,12 +3,10 @@ import Router from "koa-router";
 import logger from "koa-logger";
 import json from "koa-json";
 import KoaStatic from "koa-static";
+import cors from '@koa/cors';
 
 const app: Koa = new Koa();
 const router: Router = new Router();
-
-app.use(logger());
-app.use(json());
 
 import { router as products } from "./routes/products";
 import { router as users } from "./routes/users";
@@ -18,6 +16,9 @@ import { router as categories } from "./routes/categories";
 import { router as pins } from "./routes/pins";
 import { router as special } from "./routes/special";
 
+app.use(cors());
+app.use(logger());
+app.use(json());
 app.use(products.routes());
 app.use(users.routes());
 app.use(carts.routes());

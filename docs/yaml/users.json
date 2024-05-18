@@ -37,7 +37,7 @@
                     "type": "string"
                 }
             },
-        "required": ["name", "email", "password", "password_salt"]
+        "required": ["name", "email", "password"]
         }
     }
 }
